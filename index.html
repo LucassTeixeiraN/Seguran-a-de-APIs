@@ -43,9 +43,6 @@
       </nav>
 
       <div class="nav-actions">
-        <button class="btn-outline" id="toggleChatBtn" title="Abrir Assistente / Roteiro de Apresentação">
-          <span>💬</span> Roteiro & Chat
-        </button>
         <button class="btn-primary" id="presentModeBtn" title="Ativar Modo Slide (Teclas ← →)">
           <span>🖥️</span> Modo Slide
         </button>
@@ -713,54 +710,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1Ni...
     </section>
 
   </main>
-
-  <!-- ==========================================
-       INTERACTIVE PRESENTATION CHAT & CO-PILOT
-       ========================================== -->
-  <aside class="chat-drawer" id="chatDrawer" aria-label="Assistente Didático e Roteiro Estruturado">
-    <div class="chat-header">
-      <div class="chat-title-group">
-        <span class="chat-avatar">🤖</span>
-        <div>
-          <h4>Chat Didático & Roteiro</h4>
-          <span class="chat-status">Estruturado: Intro · Desenv. · Conclusão · Ref.</span>
-        </div>
-      </div>
-      <button class="chat-close" id="closeChatBtn" title="Fechar Chat">✕</button>
-    </div>
-
-    <!-- Quick Section Prompts matching User Request -->
-    <div class="chat-quick-nav">
-      <button class="q-chip" data-chat-topic="intro">1. Introdução</button>
-      <button class="q-chip" data-chat-topic="conceitos">2.1 Conceitos</button>
-      <button class="q-chip" data-chat-topic="historico">2.2 Histórico</button>
-      <button class="q-chip" data-chat-topic="aplicacoes">2.3 Aplicações</button>
-      <button class="q-chip" data-chat-topic="impacto">2.4 Impacto</button>
-      <button class="q-chip" data-chat-topic="casos">2.5 Casos</button>
-      <button class="q-chip" data-chat-topic="conclusao">3. Conclusão</button>
-      <button class="q-chip" data-chat-topic="referencias">4. Referências</button>
-      <button class="q-chip q-chip-highlight" data-chat-topic="roteiro">🎙️ Roteiro Completo</button>
-    </div>
-
-    <div class="chat-messages" id="chatMessages">
-      <!-- Initial message populated by app.js -->
-    </div>
-
-    <form class="chat-input-area" id="chatForm">
-      <input
-        type="text"
-        id="chatInput"
-        placeholder="Pergunte sobre BOLA, JWT, histórico, casos reais ou peça um exemplo..."
-        autocomplete="off"
-      >
-      <button type="submit" class="btn-primary chat-send-btn">Enviar</button>
-    </form>
-  </aside>
-
-  <!-- Floating Chat Trigger Button -->
-  <button class="chat-fab" id="chatFab" title="Abrir Chat Estruturado com Exemplos Práticos">
-    <span>💬</span> Chat da Apresentação
-  </button>
 
   <footer class="footer">
     <div class="footer-inner">

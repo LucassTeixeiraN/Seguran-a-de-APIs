@@ -8,7 +8,6 @@
  * - Casos Notáveis com Filtro
  * - Exemplo #3: Laboratório Prático de Ataque e Defesa ao Vivo
  * - Checklist de Maturidade & Cópia de Referências ABNT
- * - Chat Estruturado (Introdução · Desenvolvimento · Conclusão · Referências)
  * - Modo Apresentação (Slides por Teclado ← →)
  */
 
@@ -23,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initInteractiveLab();
   initChecklist();
   initReferencesCopy();
-  initStructuredChat();
   initSlideMode();
 });
 
@@ -784,190 +782,7 @@ function initReferencesCopy() {
 }
 
 /* ==========================================================================
-   9. CHAT DIDÁTICO ESTRUTURADO COM EXEMPLOS PRÁTICOS
-   ========================================================================== */
-const CHAT_KNOWLEDGE = {
-  intro: {
-    title: '1. Introdução à Segurança de APIs',
-    reply: `<strong>1. INTRODUÇÃO</strong><br>
-As APIs (Interfaces de Programação de Aplicações) representam hoje <strong>mais de 83% do tráfego da web</strong>. Diferente de sites tradicionais que entregam HTML pronto, uma API expõe diretamente endpoints de dados (JSON) e funções do backend.<br><br>
-<strong>Exemplo Prático:</strong> Quando você abre o app do banco, ele chama <code>GET /api/v1/contas/1042/saldo</code>. Se a API não validar rigorosamente quem está pedindo os dados, um atacante pode automatizar requisições para extrair milhões de registros.`,
-    sectionId: 'introducao'
-  },
-  conceitos: {
-    title: '2.1 Desenvolvimento: Conceitos Fundamentais',
-    reply: `<strong>2.1 DESENVOLVIMENTO — CONCEITOS</strong><br>
-Os 4 pilares são: <strong>Autenticação</strong> (OAuth 2.0/JWT/mTLS), <strong>Autorização por Objeto e Função</strong>, <strong>Validação de Schema</strong> e <strong>Rate Limiting</strong>. O guia mundial é o <em>OWASP API Security Top 10 (2023)</em>.<br>
-<strong>Exemplo Prático (BOLA - API1:2023):</strong>
-<pre>// Errado: busca só pelo ID da URL
-db.Pedidos.findById(req.params.id);
-// Certo: valida o dono do recurso via JWT
-db.Pedidos.findOne({ id: req.params.id, userId: req.user.id });</pre>`,
-    sectionId: 'conceitos'
-  },
-  historico: {
-    title: '2.2 Desenvolvimento: Histórico',
-    reply: `<strong>2.2 DESENVOLVIMENTO — HISTÓRICO</strong><br>
-• <strong>2000–2005:</strong> Era SOAP/XML e WS-Security (ameaças de XXE e XML Bomb).<br>
-• <strong>2006–2013:</strong> Explosão do REST + JSON com smartphones e lançamento do OAuth 2.0 (2012).<br>
-• <strong>2014–2018:</strong> Microsserviços e GraphQL (aumento dramático da superfície Leste-Oeste).<br>
-• <strong>2019–2023:</strong> Criação do OWASP API Security Top 10 exclusivo para APIs.<br>
-• <strong>2024–Hoje:</strong> APIs de Inteligência Artificial (LLMs) e Open Finance com mTLS e Zero Trust.`,
-    sectionId: 'historico'
-  },
-  aplicacoes: {
-    title: '2.3 Desenvolvimento: Aplicações Práticas',
-    reply: `<strong>2.3 DESENVOLVIMENTO — APLICAÇÕES</strong><br>
-• <strong>Open Finance & PIX:</strong> Usa mTLS (certificado digital de ambos os lados) + padrão FAPI.<br>
-• <strong>Saúde (HL7 FHIR):</strong> Escopos granulares para proteger prontuários médicos.<br>
-• <strong>E-commerce & SaaS:</strong> API Gateways aplicando Rate Limiting e validação de tokens JWT.<br>
-<strong>Exemplo Prático:</strong> Nunca use <code>jwt.decode()</code> sem verificar a assinatura criptográfica com <code>jwt.verify(token, chave, { algorithms: ['RS256'] })</code>.`,
-    sectionId: 'aplicacoes'
-  },
-  impacto: {
-    title: '2.4 Desenvolvimento: Impacto Atual',
-    reply: `<strong>2.4 DESENVOLVIMENTO — IMPACTO ATUAL</strong><br>
-• <strong>78% dos ataques</strong> ocorrem <em>após</em> a autenticação (usando tokens válidos para explorar BOLA).<br>
-• <strong>Shadow & Zombie APIs:</strong> Versões antigas esquecidas online (ex: <code>/api/v1/</code>) sem os controles da versão atual.<br>
-• <strong>Impacto Legal (LGPD):</strong> Multas de até R$ 50 milhões por infração em vazamentos massivos de dados pessoais.`,
-    sectionId: 'impacto'
-  },
-  casos: {
-    title: '2.5 Desenvolvimento: Casos Notáveis',
-    reply: `<strong>2.5 DESENVOLVIMENTO — CASOS NOTÁVEIS REAIS</strong><br>
-1. <strong>Optus (2022):</strong> 9,8 milhões de clientes vazados por uma Shadow API sem autenticação e com IDs sequenciais.<br>
-2. <strong>Peloton (2021):</strong> Falha BOLA permitia ler dados de 3 milhões de perfis privados.<br>
-3. <strong>Twitter/X (2022):</strong> 5,4 milhões de contas enumeradas via endpoint sem Rate Limit.<br>
-4. <strong>T-Mobile (2023):</strong> 37 milhões de registros extraídos via BOLA durante 40 dias.`,
-    sectionId: 'casos'
-  },
-  conclusao: {
-    title: '3. Conclusão',
-    reply: `<strong>3. CONCLUSÃO</strong><br>
-Proteger APIs exige <strong>Defesa em Profundidade</strong> e cultura <strong>DevSecOps (Shift-Left)</strong>:<br>
-1. Autenticação nunca substitui Autorização por objeto (anti-BOLA).<br>
-2. Adote Zero Trust: filtre entradas (DTOs/Allowlists) e saídas JSON.<br>
-3. Mantenha inventário OpenAPI atualizado e desative Zombie APIs.<br>
-4. Combine API Gateway (Rate Limit) com monitoramento comportamental.`,
-    sectionId: 'conclusao'
-  },
-  referencias: {
-    title: '4. Referências',
-    reply: `<strong>4. REFERÊNCIAS PRINCIPAIS</strong><br>
-• <strong>OWASP Foundation:</strong> OWASP API Security Top 10 (2023).<br>
-• <strong>NIST SP 800-204A:</strong> Building Secure Microservices-based Applications.<br>
-• <strong>IETF RFC 6749 & RFC 8725:</strong> OAuth 2.0 & JWT Best Current Practices.<br>
-• <strong>Livros:</strong> <em>API Security in Action</em> (Neil Madden) e <em>Hacking APIs</em> (Corey Ball).<br>
-• <strong>Legislação:</strong> LGPD (Lei nº 13.709/2018) e Padrões Open Finance do Banco Central.`,
-    sectionId: 'referencias'
-  },
-  roteiro: {
-    title: '🎙️ Roteiro Completo de Apresentação (5 a 10 min)',
-    reply: `<strong>🎙️ SUGESTÃO DE ROTEIRO PARA SUA APRESENTAÇÃO:</strong><br><br>
-<strong>1. Abertura (Introdução - 1.5 min):</strong> Mostre o Exemplo Prático #1 no topo da página comparando Web Tradicional vs API e destaque que 83% do tráfego da internet passa por APIs.<br>
-<strong>2. Conceitos e Histórico (2 min):</strong> Navegue pelas abas do OWASP API Top 10 (BOLA e Mass Assignment) e passe pela linha do tempo de SOAP até IA.<br>
-<strong>3. Aplicações, Impacto e Casos (2.5 min):</strong> Mostre o Inspetor de JWT (ataque <code>alg: none</code>) e cite os casos reais da Optus, Peloton e T-Mobile.<br>
-<strong>4. Demonstração Ao Vivo (Laboratório - 2 min):</strong> No Laboratório Prático, envie a requisição na conta <code>1043</code> com a API Vulnerável e depois ative o botão <em>API Protegida</em> para mostrar o bloqueio HTTP 403.<br>
-<strong>5. Fechamento (Conclusão e Referências - 1 min):</strong> Marque o Checklist de produção e apresente as referências OWASP/NIST/LGPD.`,
-    sectionId: 'introducao'
-  }
-};
-
-function initStructuredChat() {
-  const drawer = document.getElementById('chatDrawer');
-  const openBtn = document.getElementById('toggleChatBtn');
-  const fabBtn = document.getElementById('chatFab');
-  const closeBtn = document.getElementById('closeChatBtn');
-  const messagesBox = document.getElementById('chatMessages');
-  const quickChips = document.querySelectorAll('[data-chat-topic]');
-  const chatForm = document.getElementById('chatForm');
-  const chatInput = document.getElementById('chatInput');
-
-  function toggleChat(forceOpen) {
-    const isOpen = forceOpen !== undefined ? forceOpen : !drawer.classList.contains('open');
-    drawer.classList.toggle('open', isOpen);
-  }
-
-  openBtn.addEventListener('click', () => toggleChat());
-  fabBtn.addEventListener('click', () => toggleChat(true));
-  closeBtn.addEventListener('click', () => toggleChat(false));
-
-  function appendMessage(html, sender = 'bot') {
-    const div = document.createElement('div');
-    div.className = `chat-msg ${sender}`;
-    div.innerHTML = html;
-    messagesBox.appendChild(div);
-    messagesBox.scrollTop = messagesBox.scrollHeight;
-  }
-
-  // Initial structured summary in chat matching user's exact request
-  appendMessage(`
-    👋 <strong>Olá! Sou o Assistente Didático da sua apresentação sobre Segurança de APIs.</strong><br><br>
-    Aqui você encontra o resumo estruturado com exemplos práticos em todas as etapas exigidas:<br>
-    • <strong>1. Introdução</strong> (O que é e por que proteger)<br>
-    • <strong>2. Desenvolvimento</strong> (Conceitos, Histórico, Aplicações, Impacto Atual e Casos Notáveis)<br>
-    • <strong>3. Conclusão</strong> (Síntese e Checklist)<br>
-    • <strong>4. Referências</strong> (OWASP, NIST, RFCs, LGPD)<br><br>
-    Clique nos botões rápidos acima ou digite sua dúvida abaixo!
-  `, 'bot');
-
-  quickChips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      const topic = chip.getAttribute('data-chat-topic');
-      const item = CHAT_KNOWLEDGE[topic];
-      if (!item) return;
-
-      appendMessage(item.title, 'user');
-      appendMessage(item.reply, 'bot');
-
-      const targetSection = document.getElementById(item.sectionId);
-      if (targetSection && !document.body.classList.contains('slide-mode')) {
-        targetSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-  });
-
-  chatForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const q = chatInput.value.trim();
-    if (!q) return;
-
-    appendMessage(escapeHtml(q), 'user');
-    chatInput.value = '';
-
-    const lower = q.toLowerCase();
-    let answer = '';
-
-    if (lower.includes('intro')) {
-      answer = CHAT_KNOWLEDGE.intro.reply;
-    } else if (lower.includes('bola') || lower.includes('idor') || lower.includes('conceito') || lower.includes('owasp')) {
-      answer = CHAT_KNOWLEDGE.conceitos.reply;
-    } else if (lower.includes('hist') || lower.includes('soap') || lower.includes('evolu')) {
-      answer = CHAT_KNOWLEDGE.historico.reply;
-    } else if (lower.includes('aplica') || lower.includes('jwt') || lower.includes('pix') || lower.includes('open finance')) {
-      answer = CHAT_KNOWLEDGE.aplicacoes.reply;
-    } else if (lower.includes('impacto') || lower.includes('shadow') || lower.includes('zombie') || lower.includes('lgpd')) {
-      answer = CHAT_KNOWLEDGE.impacto.reply;
-    } else if (lower.includes('caso') || lower.includes('optus') || lower.includes('peloton') || lower.includes('twitter') || lower.includes('t-mobile')) {
-      answer = CHAT_KNOWLEDGE.casos.reply;
-    } else if (lower.includes('conclu') || lower.includes('checklist') || lower.includes('resumo')) {
-      answer = CHAT_KNOWLEDGE.conclusao.reply;
-    } else if (lower.includes('refer') || lower.includes('abnt') || lower.includes('bibliograf')) {
-      answer = CHAT_KNOWLEDGE.referencias.reply;
-    } else if (lower.includes('roteiro') || lower.includes('apresenta')) {
-      answer = CHAT_KNOWLEDGE.roteiro.reply;
-    } else {
-      answer = `Excelente pergunta sobre <strong>"${escapeHtml(q)}"</strong>!<br><br>
-      Em Segurança de APIs, lembre-se sempre de combinar: <strong>1) Autenticação forte</strong> (OAuth2/JWT), <strong>2) Autorização por Objeto</strong> (prevenindo BOLA), <strong>3) Validação de Schema/DTO</strong> e <strong>4) Rate Limiting</strong>.<br><br>
-      Use os botões rápidos no topo do chat para navegar diretamente por <em>Introdução · Desenvolvimento (Conceitos, Histórico, Aplicações, Impacto, Casos) · Conclusão · Referências</em>.`;
-    }
-
-    setTimeout(() => appendMessage(answer, 'bot'), 180);
-  });
-}
-
-/* ==========================================================================
-   10. MODO SLIDE (APRESENTAÇÃO EM TELA CHEIA COM TECLAS ← →)
+   9. MODO SLIDE (APRESENTAÇÃO EM TELA CHEIA COM TECLAS ← →)
    ========================================================================== */
 function initSlideMode() {
   const presentBtn = document.getElementById('presentModeBtn');
